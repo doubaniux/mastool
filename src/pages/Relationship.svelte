@@ -160,4 +160,9 @@
   .avatar {
     background-color: lightgray;
   }
+  :global(.emoji) {
+    height: 1em;
+    position: relative;
+    top: 3px;
+  }
 </style>
