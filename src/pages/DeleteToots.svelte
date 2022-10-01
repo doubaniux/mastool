@@ -41,20 +41,17 @@
   let isDeleting = false;
   let isFinished = false;
   let deletionPercentage = 0;
-
-  const fakeDelete = (id) =>
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve("toto");
-      }, 50);
-    });
+  let deletionCount = 0
 
   const onDeleteClick = async (e) => {
     e.preventDefault();
+    deletionPercentage = 0;
+    deletionCount = 0;
     isDeleting = true;
     for (let i = 0; i < ids.length; i++) {
       const id = ids[i];
-      await fakeDelete(id);
+      await deleteStatus($userData.domain, $accessToken, id);
+      deletionCount += 1;
       deletionPercentage = ((100 * (i + 1)) / ids.length).toFixed(0);
     }
     isDeleting = false;
@@ -132,7 +129,7 @@
               {#if isDeleting}
                 <div class="is-flex is-align-items-center">
                   <span class="has-text-grey"
-                    >Deleting, don't close the page</span
+                    >Deleting (1 toot/min), don't close the page</span
                   >
                 </div>
               {/if}
@@ -144,6 +141,11 @@
                   value={deletionPercentage}
                   max="100">{deletionPercentage}%</progress
                 >
+              </div>
+            {/if}
+            {#if isDeleting && !isFinished}
+              <div class="field">
+                {deletionPercentage}% ({deletionCount}/{ids.length})
               </div>
             {/if}
             {#if isFinished}

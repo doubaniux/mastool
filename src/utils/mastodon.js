@@ -3,6 +3,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import db from '../storage/FirestoreInitialization';
 import { OAUTH_CALLBACK } from "../routes";
 import { accessToken, authorizationCode, userData } from "../store";
+import limited from './limited';
 
 const CLIENT_NAME = "Mastool";
 const SCOPES = "read:accounts write:follows write:statuses read:statuses";
@@ -20,7 +21,7 @@ const retrieveApp = async (siteDomain) => {
 };
 
 const createApp = async (siteDomain) => {
-    const response = await axios.post(`https://${siteDomain}/api/v1/apps`, {
+    const response = await limited.post(`https://${siteDomain}/api/v1/apps`, {
         client_name: CLIENT_NAME,
         scopes: SCOPES,
         redirect_uris: REDIRECT_URIS,
@@ -47,7 +48,7 @@ const retrieveOrCreateApp = async (siteDomain) => {
 
 const getToken = async (siteDomain, code) => {
     const appData = await retrieveOrCreateApp(siteDomain);
-    const response = await axios.post(`https://${siteDomain}/oauth/token`, {
+    const response = await limited.post(`https://${siteDomain}/oauth/token`, {
         client_id: appData.client_id,
         client_secret: appData.client_secret,
         grant_type: "authorization_code",
@@ -93,7 +94,7 @@ const requestCode = async (siteDomain) => {
 };
 
 const getUserData = async (domain, token) => {
-    const response = await axios.get(`https://${domain}/api/v1/accounts/verify_credentials`, {
+    const response = await limited.get(`https://${domain}/api/v1/accounts/verify_credentials`, {
         headers: {
             Authorization: "Bearer " + token
         }
@@ -118,7 +119,7 @@ const getFollowings = async (domain, token, id, limit = 1000) => {
     let finished = false;
 
     while (!finished) {
-        const response = await axios.get(nextLink, { headers: { Authorization: "Bearer " + token } })
+        const response = await limited.get(nextLink, { headers: { Authorization: "Bearer " + token } })
         followings = followings.concat(response.data);
         nextLink = getNextLink(response.headers.link);
         if (nextLink === undefined) finished = true;
@@ -133,7 +134,7 @@ const getFollowers = async (domain, token, id, limit = 1000) => {
     let finished = false;
 
     while (!finished) {
-        const response = await axios.get(nextLink, { headers: { Authorization: "Bearer " + token } })
+        const response = await limited.get(nextLink, { headers: { Authorization: "Bearer " + token } })
         followers = followers.concat(response.data);
         nextLink = getNextLink(response.headers.link);
         if (nextLink === undefined) finished = true;
@@ -162,7 +163,7 @@ const translateEmojis = (text, emoji_list) => {
 };
 
 const followUser = async (domain, token, id) => {
-    const response = await axios.post(
+    const response = await limited.post(
         `https://${domain}/api/v1/accounts/${id}/follow`,
         null,
         {
@@ -175,7 +176,7 @@ const followUser = async (domain, token, id) => {
 };
 
 const unfollowUser = async (domain, token, id) => {
-    const response = await axios.post(
+    const response = await limited.post(
         `https://${domain}/api/v1/accounts/${id}/unfollow`,
         null,
         {
@@ -191,7 +192,7 @@ const getUserStatuses = async (domain, token, id, max_id = 0) => {
     let url = `https://${domain}/api/v1/accounts/${id}/statuses`;
     if (max_id)
         url += `?max_id=${max_id}`;
-    const response = await axios.get(
+    const response = await limited.get(
         url,
         {
             headers: {
@@ -219,7 +220,7 @@ const getStatusIdsByTimeRange = async (domain, token, userId, start, end) => {
         // statuses list exhausted, exit
         if (data.length === 0) break;
 
-        max_id = data[data.length-1].id
+        max_id = data[data.length - 1].id
 
         if (statusLatestDate === null) statusLatestDate = new Date(data[0].created_at);
         // no overlap
@@ -240,12 +241,11 @@ const getStatusIdsByTimeRange = async (domain, token, userId, start, end) => {
     return ids;
 };
 
-const deleteStatus = async (domain, token, id) => {
-    return response = await axios.delete(
+const deleteStatus = async (domain, token, id) =>
+    limited.delete(
         `https://${domain}/api/v1/statuses/${id}`,
         { headers: { Authorization: "Bearer " + token } }
-    )
-};
+    );
 
 export {
     requestCode,
