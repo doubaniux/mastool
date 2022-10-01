@@ -2,11 +2,18 @@
   import Logo from "../assets/logo.svg";
   import Github from "../assets/github.svg";
   import { Link, link } from "svelte-navigator";
-  import { RELATIONSHIP } from "../routes";
+  import { RELATIONSHIP, DELETE_TOOTS } from "../routes";
+  import { logout } from "../auth";
+  import { userLoggedIn } from "../store";
 
   let menuActive = false;
   const toggleBurger = () => {
     menuActive = !menuActive;
+  };
+
+  const onLogoutClick = (e) => {
+    e.preventDefault();
+    logout();
   };
 </script>
 
@@ -33,10 +40,14 @@
 
   <div id="navbarMenu" class="navbar-menu ml-5" class:is-active={menuActive}>
     <div class="navbar-start">
-      <a class="navbar-item is-flex is-align-items-center" href="https://github.com/doubaniux/mastool" target="_blank"> 
+      <a
+        class="navbar-item is-flex is-align-items-center"
+        href="https://github.com/doubaniux/mastool"
+        target="_blank"
+      >
         GitHub
         <span class="icon is-small ml-1">
-          <img src={Github} alt="GitHub" class="github">
+          <img src={Github} alt="GitHub" class="github" />
         </span>
       </a>
 
@@ -44,12 +55,20 @@
         <a class="navbar-link"> 功能列表 </a>
 
         <div class="navbar-dropdown">
-          <Link to={RELATIONSHIP} class="navbar-item">
-            互关管理
-          </Link>
+          <Link to={RELATIONSHIP} class="navbar-item">互关管理</Link>
+          <Link to={DELETE_TOOTS} class="navbar-item">Delete Toots</Link>
         </div>
       </div>
     </div>
+    {#if $userLoggedIn}
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-light" on:click={onLogoutClick}> Log out </a>
+          </div>
+        </div>
+      </div>
+    {/if}
   </div>
 </nav>
 

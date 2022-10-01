@@ -1,31 +1,35 @@
 <script>
   import { navigate } from "svelte-navigator";
   import { RELATIONSHIP } from "../routes";
-  import { authenticate } from "../utils/mastodon";
+  import { authenticate } from "../auth";
   import { userLoggedIn } from "../store";
 
-  let domain;
+  let domain = localStorage.getItem("domain") || "";
+  let error;
 
   let loading = false;
   const onSubmitClick = (e) => {
     e.preventDefault();
-    authenticate(domain.toLowerCase());
+    authenticate(domain.toLowerCase()).catch((err) => {
+      error = err;
+      loading = false;
+    });
+    error = "";
     loading = true;
   };
 
   $: if ($userLoggedIn) {
-    navigate(RELATIONSHIP);
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop) => searchParams.get(prop),
+    });
+    navigate(params.to || RELATIONSHIP);
   }
 </script>
 
 <section class="hero is-info">
   <div class="hero-body">
-    <p class="title">
-      向Mastool授权
-    </p>
-    <p>
-      为了访问您的数据，请授权登录
-    </p>
+    <p class="title">向Mastool授权</p>
+    <p>为了访问您的数据，请授权登录</p>
   </div>
 </section>
 <section class="section">
@@ -58,6 +62,12 @@
             </button>
           </div>
         </div>
+
+        {#if error}
+          <div class="notification is-danger is-light">
+            {error}
+          </div>
+        {/if}
       </form>
     </div>
   </div>

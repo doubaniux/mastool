@@ -5,7 +5,7 @@ import { OAUTH_CALLBACK } from "../routes";
 import { accessToken, authorizationCode, userData } from "../store";
 
 const CLIENT_NAME = "Mastool";
-const SCOPES = "read:accounts write:follows";
+const SCOPES = "read:accounts write:follows write:statuses read:statuses";
 const REDIRECT_URIS = window.location.origin + OAUTH_CALLBACK;
 const WEBSITE = window.location.origin;
 
@@ -55,9 +55,12 @@ const getToken = async (siteDomain, code) => {
         redirect_uri: REDIRECT_URIS,
         scope: SCOPES,
     });
-    getUserData(siteDomain, response.data.access_token);
+    const _userData = await getUserData(siteDomain, response.data.access_token);
+    userData.set(_userData);
     accessToken.set(response.data.access_token);
-}
+    localStorage.setItem("accessToken", response.data.access_token);
+    localStorage.setItem("domain", siteDomain);
+};
 
 const requestCode = async (siteDomain) => {
     const appData = await retrieveOrCreateApp(siteDomain);
@@ -87,7 +90,7 @@ const requestCode = async (siteDomain) => {
         authWindow.close();
     }
     window.addEventListener("message", codeMessageHandler);
-}
+};
 
 const getUserData = async (domain, token) => {
     const response = await axios.get(`https://${domain}/api/v1/accounts/verify_credentials`, {
@@ -95,11 +98,10 @@ const getUserData = async (domain, token) => {
             Authorization: "Bearer " + token
         }
     });
+    if (response.status !== 200) return null;
     response.data.domain = domain;
-    userData.set(response.data);
-}
-
-const authenticate = requestCode;
+    return response.data;
+};
 
 const getNextLink = (linkHeader) => {
     if (linkHeader === undefined) return;
@@ -108,7 +110,7 @@ const getNextLink = (linkHeader) => {
     if (nextPage === undefined) return;
     const nextLink = nextPage.match(/<(.*?)>/)[1];
     return nextLink;
-}
+};
 
 const getFollowings = async (domain, token, id, limit = 1000) => {
     let followings = [];
@@ -123,7 +125,7 @@ const getFollowings = async (domain, token, id, limit = 1000) => {
     }
 
     return followings;
-}
+};
 
 const getFollowers = async (domain, token, id, limit = 1000) => {
     let followers = [];
@@ -138,7 +140,7 @@ const getFollowers = async (domain, token, id, limit = 1000) => {
     }
 
     return followers;
-}
+};
 
 const getEmojiDict = (emoji_list) => {
     let dict = new Object;
@@ -146,7 +148,7 @@ const getEmojiDict = (emoji_list) => {
         dict[":" + pair.shortcode + ":"] = pair.url;
     });
     return dict;
-}
+};
 
 const translateEmojis = (text, emoji_list) => {
     let dict = getEmojiDict(emoji_list);
@@ -157,7 +159,7 @@ const translateEmojis = (text, emoji_list) => {
     });
 
     return translation;
-}
+};
 
 const followUser = async (domain, token, id) => {
     const response = await axios.post(
@@ -170,7 +172,7 @@ const followUser = async (domain, token, id) => {
         }
     )
     return response.data;
-}
+};
 
 const unfollowUser = async (domain, token, id) => {
     const response = await axios.post(
@@ -183,13 +185,76 @@ const unfollowUser = async (domain, token, id) => {
         }
     )
     return response.data;
-}
+};
+
+const getUserStatuses = async (domain, token, id, max_id = 0) => {
+    let url = `https://${domain}/api/v1/accounts/${id}/statuses`;
+    if (max_id)
+        url += `?max_id=${max_id}`;
+    const response = await axios.get(
+        url,
+        {
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        }
+    )
+    // one call returns 20 statuses
+    return response.data;
+};
+
+const getStatusIdsByTimeRange = async (domain, token, userId, start, end) => {
+    let ids = []
+
+    let statusLatestDate = null;
+    let max_id = null
+    while (true) {
+        // fetch statuses by chunks of size 20
+        const data = await getUserStatuses(
+            domain,
+            token,
+            userId,
+            max_id
+        );
+        // statuses list exhausted, exit
+        if (data.length === 0) break;
+
+        max_id = data[data.length-1].id
+
+        if (statusLatestDate === null) statusLatestDate = new Date(data[0].created_at);
+        // no overlap
+        if (start >= statusLatestDate) break;
+        // window not reached yet
+        if (end < Date(data[data.length - 1].created_at)) continue;
+
+        ids = ids.concat(data
+            .filter(status => {
+                const dateObj = new Date(status.created_at);
+                return dateObj >= start && dateObj <= end;
+            })
+            .map(status => status.id));
+
+        // all in range statuses retrieved
+        if (start >= Date(data[data.length - 1].created_at) && start <= Date(data[0].created_at)) break;
+    }
+    return ids;
+};
+
+const deleteStatus = async (domain, token, id) => {
+    return response = await axios.delete(
+        `https://${domain}/api/v1/statuses/${id}`,
+        { headers: { Authorization: "Bearer " + token } }
+    )
+};
 
 export {
-    authenticate,
+    requestCode,
+    getUserData,
     getFollowers,
     getFollowings,
     translateEmojis,
     followUser,
-    unfollowUser
+    unfollowUser,
+    getStatusIdsByTimeRange,
+    deleteStatus
 };
