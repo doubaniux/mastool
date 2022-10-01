@@ -8,7 +8,7 @@
 </script>
 
 <Route {path}>
-  <RouteGuard>
+  <RouteGuard {path}>
     <svelte:component this={component} />
   </RouteGuard>
 </Route>

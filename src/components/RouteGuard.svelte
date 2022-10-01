@@ -3,8 +3,10 @@
   import { userLoggedIn } from "../store";
   import { AUTHENTICATION } from "../routes";
 
+  export let path;
+
   $: if (!$userLoggedIn) {
-    navigate(AUTHENTICATION);
+    navigate(AUTHENTICATION + `?to=${path}`);
   }
 </script>
 
