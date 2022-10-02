@@ -1,3 +1,6 @@
+<script>
+  import { _ } from 'svelte-i18n';
+</script>
 <section class="hero is-info is-fullheight" id="loadingOverlay">
   <div class="hero-body">
     <div
@@ -31,7 +34,7 @@
         >
       </p>
       <p class="subtitle">
-        Loading...
+        {$_('component.loading_text', {default: 'Loading...'})}
       </p>
     </div>
   </div>

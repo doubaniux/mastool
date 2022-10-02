@@ -1,0 +1,43 @@
+{
+    "component": {
+        "loading_text": "Loading...",
+        "feature_list_title": "Feature list",
+        "mutual_relationship": "Manage mutual relationships",
+        "delete_toots": "Delete toots",
+        "log_out": "Log out",
+        "oauth_callback_message": "Redirecting you back to the application...",
+        "i18n_selection_dropdown_trigger": "Language"
+    },
+    "page": {
+        "auth_hero_title": "Authorize Mastool",
+        "auth_hero_description": "To access your data, please grant Mastool the necessary permissions",
+        "auth_domain_label": "Mastodon site domain",
+        "auth_domain_confirm": "Confirm",
+        "delete_toots_hero_title": "Delete Toots",
+        "delete_toots_hero_description": "Delete all your toots within a time interval",
+        "delete_toots_from_label": "From",
+        "delete_toots_to_label": "To",
+        "delete_toots_count_button": "Count statuses",
+        "delete_toots_count_message": "This may take a long time, please don't close this page",
+        "delete_toots_no_status_message": "No status found in the interval.",
+        "delete_toots_delete_warning_message": "{count} status(es) found (including replies and direct messages).\nAre you sure you want to delete all of them?",
+        "delete_toots_delete_button": "Delete",
+        "delete_toots_delete_message": "Deleting (1 toot/min), don't close the page",
+        "delete_toots_finished_message": "Done.",
+        "404_message": "Page Not Found",
+        "relationships_hero_title": "Manage mutual relationships",
+        "relationships_mutual_label": "Mutual",
+        "relationships_following_label": "Following",
+        "relationships_followers_label": "Followers",
+        "relationships_table_header_sequence": "Number",
+        "relationships_table_header_user": "User",
+        "relationships_table_header_operation": "Operation",
+        "relationships_operation_button_follow": "Follow",
+        "relationships_operation_button_unfollow": "Unfollow",
+        "relationships_operation_button_running": "Running...",
+        "relationships_operation_button_success": "√ Success",
+        "relationships_operation_button_failure": "Failed, please retry",
+        "relationships_no_user": "No result"
+
+    }
+}

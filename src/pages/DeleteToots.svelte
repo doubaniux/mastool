@@ -1,4 +1,5 @@
 <script>
+  import { _ } from 'svelte-i18n';
   import { getStatusIdsByTimeRange, deleteStatus } from "../utils/mastodon";
   import { userData, accessToken } from "../store";
 
@@ -61,8 +62,8 @@
 
 <section class="hero is-info">
   <div class="hero-body">
-    <p class="title">Delete Toots</p>
-    <p>Delete all your toots within a time interval</p>
+    <p class="title">{$_('page.delete_toots_hero_title', {default: 'Delete toots'})}</p>
+    <p>{$_('page.delete_toots_hero_description', {default: 'Delete all your toots within a time interval'})}</p>
   </div>
 </section>
 <section class="section">
@@ -70,7 +71,7 @@
     <div class="column is-half-desktop">
       <form class="box">
         <div class="field">
-          <label class="label">From</label>
+          <label class="label">{$_('page.delete_toots_from_label', {default: 'From'})}</label>
           <div class="control">
             <input
               class="input"
@@ -82,7 +83,7 @@
           </div>
         </div>
         <div class="field">
-          <label class="label">To</label>
+          <label class="label">{$_('page.delete_toots_to_label', {default: 'To'})}</label>
           <div class="control">
             <input
               class="input"
@@ -99,24 +100,23 @@
               class="button is-info"
               on:click={onCountClick}
               disabled={!isInputValid(from, to) || isCounting || isDeleting}
-              class:is-loading={isCounting}>Count statuses</button
+              class:is-loading={isCounting}>{$_('page.delete_toots_count_button', {default: 'Count statuses'})}</button
             >
           </div>
           {#if isCounting}
             <div class="is-flex is-align-items-center">
               <span class="has-text-grey"
-                >This may take a long time, please don't close this page</span
+                >{$_('page.delete_toots_count_message', {default:"This may take a long time, please don't close this page"})}</span
               >
             </div>
           {/if}
         </div>
         {#if statusCount !== null}
           {#if statusCount === 0}
-            <div class="field">No status found in the interval.</div>
+            <div class="field">{$_('page.delete_toots_no_status_message', {default: 'No status found in the interval.'})}</div>
           {:else}
             <div class="field">
-              {statusCount} status(es) found (including replies and direct messages).
-              Are you sure you want to delete all of them?
+              {$_('page.delete_toots_delete_warning_message', {default: "{count} status(es) found (including replies and direct messages).\nAre you sure you want to delete all of them?", values: { count: statusCount }})}
             </div>
             <div class="field is-grouped">
               <div class="control">
@@ -124,13 +124,13 @@
                   class="button is-danger"
                   on:click={onDeleteClick}
                   class:is-loading={isDeleting}
-                  disabled={isDeleting || isFinished}>Delete</button
+                  disabled={isDeleting || isFinished}>{$_('page.delete_toots_delete_button', {default: 'Delete'})}</button
                 >
               </div>
               {#if isDeleting}
                 <div class="is-flex is-align-items-center">
                   <span class="has-text-grey"
-                    >Deleting (1 toot/min), don't close the page</span
+                    >{$_('page.delete_toots_delete_message', {default: "Deleting (1 toot/min), don't close the page"})}</span
                   >
                 </div>
               {/if}
@@ -161,7 +161,7 @@
                   /></svg
                 >
               </span>
-              <span> <strong>Done.</strong></span>
+              <span> <strong>{$_('page.delete_toots_finished_message', {default: "Done."})}</strong></span>
             </div>
             {/if}
           {/if}

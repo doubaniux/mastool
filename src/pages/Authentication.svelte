@@ -1,4 +1,5 @@
 <script>
+  import { _ } from 'svelte-i18n';
   import { navigate } from "svelte-navigator";
   import { RELATIONSHIP } from "../routes";
   import { authenticate } from "../auth";
@@ -28,8 +29,8 @@
 
 <section class="hero is-info">
   <div class="hero-body">
-    <p class="title">向Mastool授权</p>
-    <p>为了访问您的数据，请授权登录</p>
+    <p class="title">向Mastool授权{$_('page.auth_hero_title', {default: 'Authorize Mastool'})}</p>
+    <p>为了访问您的数据，请授权登录{$_('page.auth_hero_description', {default: 'To access your data, please grant Mastool the necessary permissions'})}</p>
   </div>
 </section>
 <section class="section">
@@ -37,7 +38,7 @@
     <div class="column is-half-desktop">
       <form class="box">
         <div class="field">
-          <label class="label">站点名</label>
+          <label class="label">站点名{$_('page.auth_domain_label', {default: 'Mastodon site domain'})}</label>
           <div class="control">
             <input
               class="input"
@@ -59,6 +60,7 @@
               on:click={onSubmitClick}
             >
               确认
+              {$_('page.auth_domain_confirm', {default: 'Confirm'})}
             </button>
           </div>
         </div>

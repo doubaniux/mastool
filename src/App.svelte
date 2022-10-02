@@ -15,6 +15,7 @@
 		DELETE_TOOTS,
 	} from "./routes";
 	import { accessToken } from "./store";
+	import * as i18n from "./i18n";
 	import { login } from "./auth";
 	import LoadingOverlay from "./components/LoadingOverlay.svelte";
 

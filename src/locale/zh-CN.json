@@ -1,0 +1,43 @@
+{
+    "component": {
+        "loading_text": "加载中...",
+        "feature_list_title": "功能列表",
+        "mutual_relationship": "互关管理",
+        "delete_toots": "删除嘟文",
+        "log_out": "登出",
+        "oauth_callback_message": "返回中...",
+        "i18n_selection_dropdown_trigger": "语言"
+    },
+    "page": {
+        "auth_hero_title": "向Mastool授权",
+        "auth_hero_description": "Mastool需要权限访问您的数据",
+        "auth_domain_label": "Mastodon站点名",
+        "auth_domain_confirm": "确认",
+        "delete_toots_hero_title": "删除嘟文",
+        "delete_toots_hero_description": "删除时间段内的所有嘟文",
+        "delete_toots_from_label": "从",
+        "delete_toots_to_label": "到",
+        "delete_toots_count_button": "计算嘟文数量",
+        "delete_toots_count_message": "该操作将持续一段时间，请不要关闭本页面",
+        "delete_toots_no_status_message": "在所给时间段内未找到嘟文。",
+        "delete_toots_delete_warning_message": "找到{count}条嘟文（包括私信与回复）。\n您确定要全部删除吗？",
+        "delete_toots_delete_button": "删除",
+        "delete_toots_delete_message": "删除中（每分钟1条嘟文）, 请勿关闭页面",
+        "delete_toots_finished_message": "完成",
+        "404_message": "页面不存在",
+        "relationships_hero_title": "互关管理",
+        "relationships_mutual_label": "互相关注的",
+        "relationships_following_label": "关注的",
+        "relationships_followers_label": "关注者",
+        "relationships_table_header_sequence": "序号",
+        "relationships_table_header_user": "用户",
+        "relationships_table_header_operation": "操作",
+        "relationships_operation_button_follow": "关注",
+        "relationships_operation_button_unfollow": "取消关注",
+        "relationships_operation_button_running": "执行中...",
+        "relationships_operation_button_success": "√成功",
+        "relationships_operation_button_failure": "操作失败，请重试",
+        "relationships_no_user": "无结果"
+
+    }
+}

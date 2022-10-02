@@ -1,3 +1,6 @@
+<script>
+  import { _ } from 'svelte-i18n';
+</script>
 <section class="hero is-info is-medium">
   <div class="container">
     <div class="hero-body">
@@ -5,7 +8,7 @@
         404
       </h1>
       <p class="subtitle">
-        Page Not Found
+        {$_('page.404_message', {default: 'Page Not Found'})}
       </p>
     </div>
   </div>

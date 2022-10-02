@@ -1,7 +1,9 @@
 <script>
+  import { _ } from "svelte-i18n";
   import Logo from "../assets/logo.svg";
   import Github from "../assets/github.svg";
   import { Link, link } from "svelte-navigator";
+  import I18nSelection from "./I18nSelection.svelte";
   import { RELATIONSHIP, DELETE_TOOTS } from "../routes";
   import { logout } from "../auth";
   import { userLoggedIn } from "../store";
@@ -61,24 +63,37 @@
         class:is-active={isListDropdownOpen}
         on:click={toggleDropdown}
       >
-        <a class="navbar-link"> 功能列表 </a>
+        <a class="navbar-link"
+          >{$_("component.feature_list_title", { default: "Feature list" })}</a
+        >
         {#if isListDropdownOpen}
           <div class="navbar-dropdown">
-            <Link to={RELATIONSHIP} class="navbar-item">互关管理</Link>
-            <Link to={DELETE_TOOTS} class="navbar-item">Delete Toots</Link>
+            <Link to={RELATIONSHIP} class="navbar-item"
+              >{$_("component.mutual_relationship", {
+                default: "Manage mutual relationships",
+              })}</Link
+            >
+            <Link to={DELETE_TOOTS} class="navbar-item"
+              >{$_("component.delete_toots", { default: "Delete toots" })}</Link
+            >
           </div>
         {/if}
       </div>
     </div>
-    {#if $userLoggedIn}
-      <div class="navbar-end">
+    <div class="navbar-end">
+      {#if $userLoggedIn}
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-light" on:click={onLogoutClick}> Log out </a>
+            <a class="button is-light" on:click={onLogoutClick}>
+              {$_("component.log_out", { default: "Log out" })}
+            </a>
           </div>
         </div>
-      </div>
-    {/if}
+        <div class="navbar-item">
+          <I18nSelection/>
+        </div>
+      {/if}
+    </div>
   </div>
 </nav>
 

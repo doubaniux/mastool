@@ -1,5 +1,6 @@
 <!-- Find the users that are following given user but not followed back. -->
 <script>
+  import { _ } from 'svelte-i18n';
   import {
     getFollowers,
     getFollowings,
@@ -44,7 +45,7 @@
 
   $: users = mapping[tab];
 
-  $: beforeButtonName = tab === "followerNotFollowing" ? "关注" : "取消关注";
+  $: beforeButtonName = tab === "followerNotFollowing" ? $_('page.relationships_operation_button_follow', {default: 'Follow'}) : $_('page.relationships_operation_button_unfollow', {default: 'Unfollow'});
 
   const getOperationAsyncFunc = (id) => {
     if (tab === "mutual" || tab === "followingNotFollower") {
@@ -58,7 +59,7 @@
 
 <section class="hero is-info">
   <div class="hero-body">
-    <p class="title">互关管理</p>
+    <p class="title">{$_('page.relationships_hero_title', {default: 'Manage mutual relationships'})}</p>
   </div>
 </section>
 <section class="section">
@@ -73,28 +74,28 @@
           class:is-active={tab === "mutual"}
           on:click={(e) => (tab = "mutual")}
         >
-          <a>互相关注的</a>
+          <a>{$_('page.relationships_mutual_label', {default: 'Mutual'})}</a>
         </li>
         <li
           class:is-active={tab === "followingNotFollower"}
           on:click={(e) => (tab = "followingNotFollower")}
         >
-          <a>我关注的但未关注我的</a>
+          <a>{$_('page.relationships_following_label', {default: 'Following'})}</a>
         </li>
         <li
           class:is-active={tab === "followerNotFollowing"}
           on:click={(e) => (tab = "followerNotFollowing")}
         >
-          <a>关注我的但我未关注的</a>
+          <a>{$_('page.relationships_followers_label', {default: 'Followers'})}</a>
         </li>
       </ul>
     </div>
     <table class="table is-fullwidth">
       <thead>
         <tr>
-          <th>序号</th>
-          <th>用户</th>
-          <th>操作</th>
+          <th>{$_('page.relationships_table_header_sequence', {default: 'Number'})}</th>
+          <th>{$_('page.relationships_table_header_user', {default: 'User'})}</th>
+          <th>{$_('page.relationships_table_header_operation', {default: 'Operation'})}</th>
         </tr>
       </thead>
 
@@ -113,10 +114,10 @@
                 </div>
                 <div class="media-content">
                   <a href={url} target="_blank">
-                    <p class="title is-4">
+                    <p class="title is-size-6">
                       {@html translateEmojis(display_name, emojis)}
                     </p>
-                    <p class="subtitle is-6">@{acct}</p>
+                    <p class="subtitle is-size-6">@{acct}</p>
                   </a>
                 </div>
               </div>
@@ -125,9 +126,9 @@
               {#key users}
                 <AsyncButton
                   before={beforeButtonName}
-                  during="操作中..."
-                  success="√成功"
-                  failure="操作失败，请重试"
+                  during="{$_('page.relationships_operation_button_running', {default: 'Running...'})}"
+                  success="{$_('page.relationships_operation_button_success', {default: '√ Success'})}"
+                  failure="{$_('page.relationships_operation_button_failure', {default: 'Failed, please retry'})}"
                   asynFunc={getOperationAsyncFunc(id)}
                 />
               {/key}
@@ -138,7 +139,7 @@
     </table>
     {#if users.length === 0}
       <div class="container">
-        <p class="content has-text-grey-light">无结果</p>
+        <p class="content has-text-grey-light">{$_('page.relationships_no_user', {default: 'No result'})}</p>
       </div>
     {/if}
   {/if}
@@ -164,5 +165,16 @@
     height: 1em;
     position: relative;
     top: 3px;
+  }
+
+  @media only screen and (max-width: 1024px){
+    .media {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .media-content {
+      margin-top: 0.5rem;
+    }
   }
 </style>
