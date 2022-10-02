@@ -23,7 +23,7 @@
 </script>
 
 <nav class="navbar py-2 px-1" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
+  <div class="navbar-brand mr-5">
     <a class="navbar-item" href="/" use:link>
       <img src={Logo} alt="Mastodon Tool" />
     </a>
@@ -43,7 +43,7 @@
     </button>
   </div>
 
-  <div id="navbarMenu" class="navbar-menu ml-5" class:is-active={isMenuActive}>
+  <div id="navbarMenu" class="navbar-menu" class:is-active={isMenuActive}>
     <div class="navbar-start">
       <a
         class="navbar-item is-flex is-align-items-center"
