@@ -89,10 +89,10 @@
             </a>
           </div>
         </div>
-        <div class="navbar-item">
-          <I18nSelection/>
-        </div>
       {/if}
+      <div class="navbar-item">
+        <I18nSelection />
+      </div>
     </div>
   </div>
 </nav>
