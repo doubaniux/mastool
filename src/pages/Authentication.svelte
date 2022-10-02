@@ -29,8 +29,8 @@
 
 <section class="hero is-info">
   <div class="hero-body">
-    <p class="title">向Mastool授权{$_('page.auth_hero_title', {default: 'Authorize Mastool'})}</p>
-    <p>为了访问您的数据，请授权登录{$_('page.auth_hero_description', {default: 'To access your data, please grant Mastool the necessary permissions'})}</p>
+    <p class="title">{$_('page.auth_hero_title', {default: 'Authorize Mastool'})}</p>
+    <p>{$_('page.auth_hero_description', {default: 'To access your data, please grant Mastool the necessary permissions'})}</p>
   </div>
 </section>
 <section class="section">
@@ -38,7 +38,7 @@
     <div class="column is-half-desktop">
       <form class="box">
         <div class="field">
-          <label class="label">站点名{$_('page.auth_domain_label', {default: 'Mastodon site domain'})}</label>
+          <label class="label">{$_('page.auth_domain_label', {default: 'Mastodon site domain'})}</label>
           <div class="control">
             <input
               class="input"
@@ -59,7 +59,6 @@
               id="submit"
               on:click={onSubmitClick}
             >
-              确认
               {$_('page.auth_domain_confirm', {default: 'Confirm'})}
             </button>
           </div>
