@@ -6,9 +6,14 @@
   import { logout } from "../auth";
   import { userLoggedIn } from "../store";
 
-  let menuActive = false;
+  let isMenuActive = false;
   const toggleBurger = () => {
-    menuActive = !menuActive;
+    isMenuActive = !isMenuActive;
+  };
+
+  let isListDropdownOpen = false;
+  const toggleDropdown = () => {
+    isListDropdownOpen = !isListDropdownOpen;
   };
 
   const onLogoutClick = (e) => {
@@ -26,7 +31,7 @@
     <button
       role="button"
       class="navbar-burger"
-      class:is-active={menuActive}
+      class:is-active={isMenuActive}
       aria-label="menu"
       aria-expanded="false"
       data-target="navbarMenu"
@@ -38,7 +43,7 @@
     </button>
   </div>
 
-  <div id="navbarMenu" class="navbar-menu ml-5" class:is-active={menuActive}>
+  <div id="navbarMenu" class="navbar-menu ml-5" class:is-active={isMenuActive}>
     <div class="navbar-start">
       <a
         class="navbar-item is-flex is-align-items-center"
@@ -51,13 +56,18 @@
         </span>
       </a>
 
-      <div class="navbar-item has-dropdown is-hoverable">
+      <div
+        class="navbar-item has-dropdown"
+        class:is-active={isListDropdownOpen}
+        on:click={toggleDropdown}
+      >
         <a class="navbar-link"> 功能列表 </a>
-
-        <div class="navbar-dropdown">
-          <Link to={RELATIONSHIP} class="navbar-item">互关管理</Link>
-          <Link to={DELETE_TOOTS} class="navbar-item">Delete Toots</Link>
-        </div>
+        {#if isListDropdownOpen}
+          <div class="navbar-dropdown">
+            <Link to={RELATIONSHIP} class="navbar-item">互关管理</Link>
+            <Link to={DELETE_TOOTS} class="navbar-item">Delete Toots</Link>
+          </div>
+        {/if}
       </div>
     </div>
     {#if $userLoggedIn}

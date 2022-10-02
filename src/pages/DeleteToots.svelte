@@ -62,11 +62,12 @@
 <section class="hero is-info">
   <div class="hero-body">
     <p class="title">Delete Toots</p>
+    <p>Delete all your toots within a time interval</p>
   </div>
 </section>
 <section class="section">
   <div class="columns is-mobile is-centered">
-    <div class="column is-half">
+    <div class="column is-half-desktop">
       <form class="box">
         <div class="field">
           <label class="label">From</label>

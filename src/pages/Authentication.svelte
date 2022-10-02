@@ -34,7 +34,7 @@
 </section>
 <section class="section">
   <div class="columns is-mobile is-centered">
-    <div class="column is-half">
+    <div class="column is-half-desktop">
       <form class="box">
         <div class="field">
           <label class="label">站点名</label>
