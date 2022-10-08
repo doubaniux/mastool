@@ -1,5 +1,5 @@
 <script>
-	import "bulma/css/bulma.min.css";
+	import "./sass/style.scss";
 	import { Router, Route } from "svelte-navigator";
 	import Navbar from "./components/Navbar.svelte";
 	import OAuthCallbackHandler from "./components/OAuthCallbackHandler.svelte";

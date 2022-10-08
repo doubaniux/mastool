@@ -3,7 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
-import css from 'rollup-plugin-css-only';
+import scss from 'rollup-plugin-scss';
 import image from '@rollup/plugin-image';
 import json from '@rollup/plugin-json';
 
@@ -55,9 +55,10 @@ export default {
 				handler(warning);
 			},
 		}),
-		// we'll extract any component CSS out into
-		// a separate file - better for performance
-		css({ output: 'bundle.css' }),
+		scss({
+			watch: 'src/sass/style.scss',
+			outputStyle: 'compressed',
+		}),
 
 		image(),
 
